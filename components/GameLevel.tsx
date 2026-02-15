@@ -84,7 +84,6 @@ const GameLevel: React.FC<GameLevelProps> = ({ user, levelId, onFinish, onBack }
         continue;
       }
 
-      // Déterminer l'action visuelle
       if (block.type === 'forward') {
         setCurrentAction('moving');
         const rad = (currentPos.angle * Math.PI) / 180;
@@ -96,13 +95,9 @@ const GameLevel: React.FC<GameLevelProps> = ({ user, levelId, onFinish, onBack }
         currentPos.angle = (currentPos.angle + turnDir + 360) % 360;
       }
       
-      // Mettre à jour l'état de la tortue (déclenche la transition CSS de 500ms)
       setTurtlePos({ ...currentPos });
-      
-      // Attendre la fin de l'animation de mouvement/rotation
       await new Promise(r => setTimeout(r, 550));
       
-      // Enregistrer le nouveau point dans le tracé
       newPath = [...newPath, { x: currentPos.x, y: currentPos.y }];
       setPath(newPath);
       setCurrentAction(null);
@@ -152,11 +147,24 @@ const GameLevel: React.FC<GameLevelProps> = ({ user, levelId, onFinish, onBack }
             </div>
           </div>
           
-          <div className="flex-1 relative bg-blue-50/30 flex items-center justify-center bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:25px_25px]">
-            <div className="absolute inset-0 opacity-10 pointer-events-none">
+          <div className="flex-1 relative bg-blue-50/10 flex items-center justify-center overflow-hidden">
+            {/* Background Layers with Blur Effect */}
+            <div 
+              className="absolute inset-0 opacity-20 blur-[3px] scale-110 pointer-events-none"
+              style={{ 
+                backgroundImage: "url('https://images.unsplash.com/photo-1548013146-72479768bbaa?auto=format&fit=crop&q=80&w=1000')",
+                backgroundSize: 'cover',
+                backgroundPosition: 'center'
+              }}
+            ></div>
+            
+            <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:25px_25px] opacity-30"></div>
+            
+            <div className="absolute inset-0 opacity-5 pointer-events-none blur-[1px]">
               {ZELLIGE_PATTERN}
             </div>
 
+            {/* Target Path Ghost */}
             <svg className="absolute inset-0 w-full h-full opacity-30">
                <polyline 
                  points={`${level.startPos.x},${level.startPos.y} ` + level.targetPath.map(p => `${p.x},${p.y}`).join(' ')} 
@@ -169,6 +177,7 @@ const GameLevel: React.FC<GameLevelProps> = ({ user, levelId, onFinish, onBack }
                />
             </svg>
 
+            {/* Target Indicator */}
             <div 
               className={`absolute w-12 h-12 border-4 border-dashed rounded-full flex items-center justify-center transition-all duration-300 ${
                 isVeryClose 
@@ -182,11 +191,12 @@ const GameLevel: React.FC<GameLevelProps> = ({ user, levelId, onFinish, onBack }
               <span className="material-icons-round text-accent text-xl">location_on</span>
             </div>
 
+            {/* User's Trajectory */}
             <svg className="absolute inset-0 w-full h-full">
                <polyline points={path.map(p => `${p.x},${p.y}`).join(' ')} fill="none" stroke="#10b981" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
 
-            {/* Avatar / Turtle avec transition CSS */}
+            {/* Avatar / Turtle */}
             <div 
               className="absolute transition-all duration-500 ease-in-out z-30"
               style={{ 
