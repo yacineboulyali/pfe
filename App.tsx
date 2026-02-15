@@ -9,11 +9,13 @@ import ProfileScreen from './components/ProfileScreen';
 import LeaderboardScreen from './components/LeaderboardScreen';
 import NotificationScreen from './components/NotificationScreen';
 import BottomNavigation from './components/BottomNavigation';
+import InviteScreen from './components/InviteScreen';
 
 const App: React.FC = () => {
   const [gameState, setGameState] = useState<GameState>(GameState.SPLASH);
   const [user, setUser] = useState<UserProfile | null>(null);
   const [currentLevelId, setCurrentLevelId] = useState<string | null>(null);
+  const [activeRoomCode, setActiveRoomCode] = useState<string | null>(null);
 
   const handleStart = () => setGameState(GameState.AUTH);
   
@@ -36,6 +38,11 @@ const App: React.FC = () => {
   const handleSelectLevel = (levelId: string) => {
     setCurrentLevelId(levelId);
     setGameState(GameState.LEVEL);
+  };
+
+  const handleOpenInvite = (roomCode: string) => {
+    setActiveRoomCode(roomCode);
+    setGameState(GameState.INVITE);
   };
 
   const handleLevelComplete = (success: boolean) => {
@@ -75,7 +82,7 @@ const App: React.FC = () => {
         )}
 
         {gameState === GameState.PROFILE && user && (
-          <ProfileScreen user={user} />
+          <ProfileScreen user={user} onInvite={handleOpenInvite} />
         )}
 
         {gameState === GameState.LEADERBOARD && user && (
@@ -84,6 +91,10 @@ const App: React.FC = () => {
 
         {gameState === GameState.NOTIFICATIONS && user && (
           <NotificationScreen user={user} />
+        )}
+
+        {gameState === GameState.INVITE && user && activeRoomCode && (
+          <InviteScreen roomCode={activeRoomCode} onBack={() => setGameState(GameState.PROFILE)} />
         )}
 
         {gameState === GameState.LEVEL && user && currentLevelId && (

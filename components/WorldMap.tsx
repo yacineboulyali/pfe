@@ -153,7 +153,8 @@ const WorldMap: React.FC<WorldMapProps> = ({ user, onSelectLevel }) => {
 
       {/* Map Content */}
       <div className="relative flex-1 bg-background-light overflow-y-auto scrollbar-hide pb-32">
-        <div className="absolute inset-0 opacity-5 pointer-events-none">
+        {/* Moroccan Zellige Background with 20% opacity as requested */}
+        <div className="absolute inset-0 opacity-20 pointer-events-none">
           {ZELLIGE_PATTERN}
         </div>
 

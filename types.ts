@@ -6,7 +6,8 @@ export enum GameState {
   LEVEL = 'LEVEL',
   PROFILE = 'PROFILE',
   LEADERBOARD = 'LEADERBOARD',
-  NOTIFICATIONS = 'NOTIFICATIONS'
+  NOTIFICATIONS = 'NOTIFICATIONS',
+  INVITE = 'INVITE'
 }
 
 export enum Gender {
