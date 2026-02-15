@@ -52,7 +52,7 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onStart }) => {
 
         <div className="mt-12 text-center space-y-2">
           <h2 className="text-xl font-black text-[#93441A] uppercase tracking-tight">Prêt pour l'aventure ?</h2>
-          <p className="text-xs font-bold text-[#93441A]/50 max-w-[200px] leading-relaxed">
+          <p className="text-sm font-bold text-[#93441A]/50 max-w-[200px] leading-tight">
             Explore les cités médiévales et maîtrise l'art du code.
           </p>
         </div>

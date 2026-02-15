@@ -216,7 +216,7 @@ const GameLevel: React.FC<GameLevelProps> = ({ user, levelId, onFinish, onBack }
           }`}
         >
           <div className="flex items-center justify-between py-3 px-4">
-            <span className="text-white font-mono text-xs">{block.label}</span>
+            <span className="text-white font-bold text-sm tracking-tight">{block.label}</span>
             <div className="flex items-center gap-2">
                <button onClick={() => removeBlock(block.id)} disabled={isRunning} className="text-white/40 hover:text-white transition-colors">
                   <span className="material-icons-round text-sm">close</span>
@@ -240,7 +240,7 @@ const GameLevel: React.FC<GameLevelProps> = ({ user, levelId, onFinish, onBack }
                 </div>
               ) : (
                 <div className="py-4 flex items-center justify-center italic text-white/60 text-[10px] pointer-events-none">
-                  Drop inside loop...
+                  Dépose ici...
                 </div>
               )}
             </div>
@@ -279,7 +279,7 @@ const GameLevel: React.FC<GameLevelProps> = ({ user, levelId, onFinish, onBack }
 
         <div className="flex items-center gap-1.5 bg-red-50 px-3 py-1.5 rounded-full border border-red-100 shadow-sm">
            <span className="text-red-500 material-icons-round text-sm">favorite</span>
-           <span className="font-black text-red-700 text-xs">{user.hearts}</span>
+           <span className="font-black text-red-700 text-xs tracking-tighter">{user.hearts}</span>
         </div>
       </header>
 
@@ -328,10 +328,10 @@ const GameLevel: React.FC<GameLevelProps> = ({ user, levelId, onFinish, onBack }
           className="flex-1 bg-[#F9F5EC] rounded-[2rem] border-2 border-dashed border-amber-200/50 p-6 flex flex-col gap-4 shadow-inner relative overflow-hidden"
         >
           <div className="flex justify-between items-center mb-2">
-            <h2 className="text-sm font-black text-[#93441A] uppercase tracking-wider font-display">Code Editor</h2>
+            <h2 className="text-sm font-black text-[#93441A] uppercase tracking-wider">Éditeur Python</h2>
             <div className="bg-[#EBD6B5]/60 px-3 py-1 rounded-full flex items-center gap-1.5 border border-[#93441A]/10">
                <span className="material-icons-round text-emerald-600 text-sm">code</span>
-               <span className="text-[10px] font-bold text-emerald-800">Python 3.x</span>
+               <span className="text-[10px] font-black text-emerald-800 uppercase tracking-tighter">Script</span>
             </div>
           </div>
 
@@ -341,7 +341,7 @@ const GameLevel: React.FC<GameLevelProps> = ({ user, levelId, onFinish, onBack }
                 key={action}
                 draggable={!isRunning}
                 onDragStart={(e) => handleDragStartPalette(e, action as TurtleAction)}
-                className="bg-[#93441A] text-white py-3 px-4 rounded-2xl font-mono text-xs flex justify-between items-center shadow-md active:translate-y-0.5 transition-all hover:brightness-110 cursor-grab"
+                className="bg-[#93441A] text-white py-3 px-4 rounded-2xl font-bold text-xs flex justify-between items-center shadow-md active:translate-y-0.5 transition-all hover:brightness-110 cursor-grab"
               >
                 <span>{BLOCK_LABELS[action as TurtleAction]}</span>
                 <span className="material-icons-round text-white/40 text-sm">drag_indicator</span>
@@ -351,8 +351,8 @@ const GameLevel: React.FC<GameLevelProps> = ({ user, levelId, onFinish, onBack }
 
           <div className="flex-1 overflow-y-auto pr-1 flex flex-col gap-2 min-h-0 scrollbar-hide">
              {script.length === 0 ? (
-                <div className="flex-1 border-2 border-dashed border-[#93441A]/10 rounded-3xl flex items-center justify-center text-[#93441A]/20 italic text-xs text-center px-8">
-                   Faites glisser les blocs ici pour construire votre code Python
+                <div className="flex-1 border-2 border-dashed border-[#93441A]/10 rounded-3xl flex items-center justify-center text-[#93441A]/20 italic text-xs text-center px-8 font-bold">
+                   Faites glisser les blocs ici pour coder l'aventure
                 </div>
              ) : (
                 script.map(block => renderBlock(block))
@@ -360,14 +360,14 @@ const GameLevel: React.FC<GameLevelProps> = ({ user, levelId, onFinish, onBack }
           </div>
 
           <div className="flex gap-4 mt-auto">
-             <button onClick={clearScript} disabled={isRunning} className="bg-white flex-1 py-4 rounded-3xl shadow-md border-b-4 border-gray-200 flex items-center justify-center gap-2 font-black text-xs text-primary/60 hover:bg-gray-50 active:translate-y-1 active:border-b-0 transition-all uppercase">
-                <span className="material-icons-round text-sm">refresh</span> Reset
+             <button onClick={clearScript} disabled={isRunning} className="bg-white flex-1 py-4 rounded-3xl shadow-md border-b-4 border-gray-200 flex items-center justify-center gap-2 font-black text-xs text-primary/60 hover:bg-gray-50 active:translate-y-1 active:border-b-0 transition-all uppercase tracking-widest">
+                <span className="material-icons-round text-sm">refresh</span>
              </button>
-             <button onClick={runCode} disabled={script.length === 0 || isRunning} className={`flex-[2] py-4 rounded-3xl shadow-md border-b-4 flex items-center justify-center gap-2 font-black text-xs text-white uppercase transition-all active:translate-y-1 active:border-b-0 ${script.length === 0 || isRunning ? 'bg-gray-300 border-gray-400' : 'bg-[#10b981] border-[#0c8e62] hover:brightness-110'}`}>
+             <button onClick={runCode} disabled={script.length === 0 || isRunning} className={`flex-[3] py-4 rounded-3xl shadow-md border-b-4 flex items-center justify-center gap-2 font-black text-xs text-white uppercase transition-all active:translate-y-1 active:border-b-0 tracking-[0.15em] ${script.length === 0 || isRunning ? 'bg-gray-300 border-gray-400' : 'bg-[#10b981] border-[#0c8e62] hover:brightness-110'}`}>
                 <span className={`material-icons-round text-sm ${isRunning ? 'animate-spin' : ''}`}>
                    {isRunning ? 'sync' : 'play_arrow'}
                 </span>
-                {isRunning ? 'Running...' : 'Execute'}
+                {isRunning ? 'Exécution...' : 'Lancer'}
              </button>
           </div>
         </section>

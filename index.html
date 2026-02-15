@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ibn Battuta : La Voûte de l'Algorithmique</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&family=Amiri:wght@400;700&family=Cinzel:wght@400;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Amiri:wght@400;700&family=Cinzel:wght@700;900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
     <script>
         tailwind.config = {
@@ -19,8 +19,9 @@
                         "background-light": "#FFF8E7",
                     },
                     fontFamily: {
-                        display: ["Cinzel", "serif"],
-                        body: ["Nunito", "sans-serif"],
+                        display: ["Fredoka", "sans-serif"],
+                        body: ["Fredoka", "sans-serif"],
+                        arabic: ["Amiri", "serif"],
                     },
                 },
             },
@@ -28,17 +29,19 @@
     </script>
     <style>
         body {
-            font-family: 'Nunito', sans-serif;
+            font-family: 'Fredoka', sans-serif;
             background-color: #FFF8E7;
             margin: 0;
             padding: 0;
             overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
         }
         .arabic-font {
             font-family: 'Amiri', serif;
         }
         .font-display {
-            font-family: 'Cinzel', serif;
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 700;
         }
         /* Custom scrollbar */
         ::-webkit-scrollbar {
