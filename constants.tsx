@@ -12,26 +12,6 @@ export const CITIES: City[] = [
     accent: 'border-amber-700',
     position: { x: 50, y: 80 },
     description: "La capitale lumineuse."
-  },
-  {
-    id: 'marrakech',
-    name: 'Marrakech',
-    landmark: 'Koutoubia',
-    locked: true,
-    color: 'bg-rose-600',
-    accent: 'border-rose-700',
-    position: { x: 30, y: 50 },
-    description: "La perle du sud."
-  },
-  {
-    id: 'chefchaouen',
-    name: 'Chefchaouen',
-    landmark: 'Maisons Bleues',
-    locked: true,
-    color: 'bg-sky-600',
-    accent: 'border-sky-700',
-    position: { x: 70, y: 20 },
-    description: "La cité bleue des montagnes."
   }
 ];
 
@@ -39,10 +19,46 @@ export const LEVELS: Level[] = [
   {
     id: 'lvl1',
     cityId: 'rabat',
-    title: 'La Porte de la Tour',
-    mission: 'Atteins l\'entrée de la Tour Hassan en traçant une ligne droite.',
-    startPos: { x: 50, y: 150, angle: 0 },
-    targetPath: [{ x: 50, y: 50 }],
+    title: 'Le Premier Pas',
+    mission: 'Ibn Battuta doit avancer de 100 pixels vers le nord pour quitter la porte.',
+    startPos: { x: 175, y: 200, angle: 0 },
+    targetPath: [{ x: 175, y: 150 }, { x: 175, y: 100 }],
+    availableBlocks: ['forward', 'comment']
+  },
+  {
+    id: 'lvl2',
+    cityId: 'rabat',
+    title: "L'Angle de la Kasbah",
+    mission: 'Avance de 50, tourne à droite, puis avance de 50 pour atteindre la fontaine.',
+    startPos: { x: 125, y: 175, angle: 0 },
+    targetPath: [{ x: 125, y: 125 }, { x: 175, y: 125 }],
+    availableBlocks: ['forward', 'right', 'comment']
+  },
+  {
+    id: 'lvl3',
+    cityId: 'rabat',
+    title: "Le Zig-zag de Salé",
+    mission: 'Contourne les murs : Avance, Gauche, Avance, Droite, Avance.',
+    startPos: { x: 100, y: 200, angle: 0 },
+    targetPath: [{ x: 100, y: 150 }, { x: 50, y: 150 }, { x: 50, y: 100 }],
+    availableBlocks: ['forward', 'right', 'left', 'comment']
+  },
+  {
+    id: 'lvl4',
+    cityId: 'rabat',
+    title: "Le Carré Parfait",
+    mission: 'Trace un demi-carré : Avance 50, Droite, Avance 50, Droite, Avance 50.',
+    startPos: { x: 150, y: 200, angle: 0 },
+    targetPath: [{ x: 150, y: 150 }, { x: 200, y: 150 }, { x: 200, y: 200 }],
+    availableBlocks: ['forward', 'right', 'comment']
+  },
+  {
+    id: 'lvl5',
+    cityId: 'rabat',
+    title: "La Voûte Finale",
+    mission: 'Utilise toutes tes connaissances pour atteindre le centre de la Tour Hassan.',
+    startPos: { x: 100, y: 100, angle: 90 },
+    targetPath: [{ x: 150, y: 100 }, { x: 150, y: 150 }, { x: 200, y: 150 }],
     availableBlocks: ['forward', 'right', 'left', 'comment']
   }
 ];
