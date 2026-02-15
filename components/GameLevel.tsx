@@ -207,9 +207,9 @@ const GameLevel: React.FC<GameLevelProps> = ({ user, levelId, onFinish, onBack }
           draggable={!isRunning}
           onDragStart={(e) => handleDragStartScript(e, block)}
           onDragOver={(e) => handleDragOver(e, block.id, 'block')}
-          className={`flex flex-col rounded-2xl shadow-sm border-2 transition-all duration-200 ${
+          className={`flex flex-col rounded-2xl shadow-sm border-2 transition-all duration-200 cursor-grab active:cursor-grabbing hover:brightness-110 hover:shadow-md hover:border-white/30 ${
             activeBlockId === block.id 
-              ? 'bg-emerald-500 border-emerald-600 scale-105 z-10' 
+              ? 'bg-emerald-500 border-emerald-600 scale-105 z-10 shadow-[0_0_15px_rgba(16,185,129,0.4)]' 
               : isLoop 
                 ? 'bg-[#DAAB3A] border-[#B88E28]' 
                 : 'bg-[#93441A] border-[#93441A]'
@@ -221,7 +221,7 @@ const GameLevel: React.FC<GameLevelProps> = ({ user, levelId, onFinish, onBack }
                <button onClick={() => removeBlock(block.id)} disabled={isRunning} className="text-white/40 hover:text-white transition-colors">
                   <span className="material-icons-round text-sm">close</span>
                </button>
-               <span className="material-icons-round text-white/40 text-sm cursor-grab active:cursor-grabbing">drag_indicator</span>
+               <span className="material-icons-round text-white/40 text-sm">drag_indicator</span>
             </div>
           </div>
 

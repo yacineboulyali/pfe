@@ -6,17 +6,14 @@ import AuthScreen from './components/AuthScreen';
 import WorldMap from './components/WorldMap';
 import GameLevel from './components/GameLevel';
 import ProfileScreen from './components/ProfileScreen';
+import LeaderboardScreen from './components/LeaderboardScreen';
+import NotificationScreen from './components/NotificationScreen';
 import BottomNavigation from './components/BottomNavigation';
 
 const App: React.FC = () => {
   const [gameState, setGameState] = useState<GameState>(GameState.SPLASH);
   const [user, setUser] = useState<UserProfile | null>(null);
   const [currentLevelId, setCurrentLevelId] = useState<string | null>(null);
-
-  // Initialize a mock user for testing if needed
-  useEffect(() => {
-    // If we had local storage persistence, it would go here
-  }, []);
 
   const handleStart = () => setGameState(GameState.AUTH);
 
@@ -28,7 +25,7 @@ const App: React.FC = () => {
       streak: 5,
       hearts: 5,
       badges: [],
-      score: 12500,
+      score: 1463,
       completedLevels: []
     });
     setGameState(GameState.MAP);
@@ -55,7 +52,12 @@ const App: React.FC = () => {
     setGameState(GameState.MAP);
   };
 
-  const showNavbar = user && (gameState === GameState.MAP || gameState === GameState.PROFILE);
+  const showNavbar = user && (
+    gameState === GameState.MAP || 
+    gameState === GameState.PROFILE || 
+    gameState === GameState.LEADERBOARD ||
+    gameState === GameState.NOTIFICATIONS
+  );
 
   return (
     <div className="relative w-full h-screen max-w-md mx-auto bg-amber-50 shadow-2xl overflow-hidden flex flex-col">
@@ -72,6 +74,14 @@ const App: React.FC = () => {
 
         {gameState === GameState.PROFILE && user && (
           <ProfileScreen user={user} />
+        )}
+
+        {gameState === GameState.LEADERBOARD && user && (
+          <LeaderboardScreen user={user} />
+        )}
+
+        {gameState === GameState.NOTIFICATIONS && user && (
+          <NotificationScreen user={user} />
         )}
 
         {gameState === GameState.LEVEL && user && currentLevelId && (
