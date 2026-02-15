@@ -13,9 +13,10 @@ interface Competition {
 interface ProfileScreenProps {
   user: UserProfile;
   onInvite: (roomCode: string) => void;
+  onSelectCompetition: (roomCode: string) => void;
 }
 
-const ProfileScreen: React.FC<ProfileScreenProps> = ({ user, onInvite }) => {
+const ProfileScreen: React.FC<ProfileScreenProps> = ({ user, onInvite, onSelectCompetition }) => {
   const [roomCode, setRoomCode] = useState('');
   const [isCreating, setIsCreating] = useState(false);
   const [competitions, setCompetitions] = useState<Competition[]>([
@@ -165,7 +166,11 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ user, onInvite }) => {
           ) : (
             <div className="grid gap-3">
               {competitions.map((comp) => (
-                <div key={comp.id} className="bg-white p-4 rounded-3xl shadow-lg border-2 border-white hover:border-[#DAAB3A]/30 transition-all flex items-center justify-between group animate-in slide-in-from-bottom-2">
+                <div 
+                  key={comp.id} 
+                  onClick={() => onSelectCompetition(comp.code)}
+                  className="bg-white p-4 rounded-3xl shadow-lg border-2 border-white hover:border-[#DAAB3A]/30 transition-all flex items-center justify-between group animate-in slide-in-from-bottom-2 cursor-pointer"
+                >
                   <div className="flex items-center gap-4">
                     <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-50 to-orange-50 flex items-center justify-center border border-amber-100 shadow-inner">
                       <span className="material-icons-round text-amber-600">stars</span>
@@ -181,7 +186,7 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ user, onInvite }) => {
                     </div>
                   </div>
                   
-                  <div className="flex gap-2">
+                  <div className="flex gap-2" onClick={(e) => e.stopPropagation()}>
                     <button 
                       onClick={() => onInvite(comp.code)}
                       className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-600 hover:bg-emerald-600 hover:text-white transition-all active:scale-90 shadow-sm"

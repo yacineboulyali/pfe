@@ -153,8 +153,8 @@ const WorldMap: React.FC<WorldMapProps> = ({ user, onSelectLevel }) => {
 
       {/* Map Content */}
       <div className="relative flex-1 bg-background-light overflow-y-auto scrollbar-hide pb-32">
-        {/* Moroccan Zellige Background with 20% opacity as requested */}
-        <div className="absolute inset-0 opacity-20 pointer-events-none">
+        {/* Moroccan Zellige Background with 5% opacity */}
+        <div className="absolute inset-0 opacity-5 pointer-events-none">
           {ZELLIGE_PATTERN}
         </div>
 
@@ -170,8 +170,8 @@ const WorldMap: React.FC<WorldMapProps> = ({ user, onSelectLevel }) => {
             stroke="#93441A" 
             strokeWidth="10" 
             strokeDasharray="15,20" 
-            strokeLinecap="round"
-            strokeLinejoin="round"
+            strokeLinecap="round" 
+            strokeLinejoin="round" 
             className="opacity-20"
           />
         </svg>
