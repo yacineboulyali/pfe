@@ -16,7 +16,7 @@ const BottomNavigation: React.FC<BottomNavigationProps> = ({ currentTab, onTabCh
   ];
 
   return (
-    <nav className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md bg-white border-t-2 border-amber-100 py-3 px-6 flex justify-between items-center z-[100] shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
+    <nav className="relative w-full bg-white border-t-2 border-amber-100 py-3 px-6 flex justify-between items-center z-[100] shadow-[0_-4px_20px_rgba(0,0,0,0.05)] mt-[30px]">
       {tabs.map((tab) => {
         const isActive = currentTab === tab.id;
         

@@ -16,6 +16,8 @@ const App: React.FC = () => {
   const [currentLevelId, setCurrentLevelId] = useState<string | null>(null);
 
   const handleStart = () => setGameState(GameState.AUTH);
+  
+  const handleBackToSplash = () => setGameState(GameState.SPLASH);
 
   const handleAuthComplete = (name: string, phone: string, avatar: Gender) => {
     setUser({
@@ -65,7 +67,7 @@ const App: React.FC = () => {
         {gameState === GameState.SPLASH && <SplashScreen onStart={handleStart} />}
         
         {gameState === GameState.AUTH && (
-          <AuthScreen onComplete={handleAuthComplete} />
+          <AuthScreen onComplete={handleAuthComplete} onBack={handleBackToSplash} />
         )}
 
         {gameState === GameState.MAP && user && (
