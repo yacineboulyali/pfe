@@ -69,6 +69,23 @@
         .mosaic-pattern {
             background-image: url('https://www.transparenttextures.com/patterns/arabesque.png');
         }
+
+        /* Nouvelles animations pour l'exécution du code */
+        @keyframes walk-wobble {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(8deg); }
+            75% { transform: rotate(-8deg); }
+        }
+        .animate-turtle-walk {
+            animation: walk-wobble 0.2s ease-in-out infinite;
+        }
+        @keyframes pivot-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+        .animate-turtle-pivot {
+            animation: pivot-pulse 0.5s ease-in-out;
+        }
     </style>
 <script type="importmap">
 {

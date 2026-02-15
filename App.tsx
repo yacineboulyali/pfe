@@ -5,6 +5,8 @@ import SplashScreen from './components/SplashScreen';
 import AuthScreen from './components/AuthScreen';
 import WorldMap from './components/WorldMap';
 import GameLevel from './components/GameLevel';
+import ProfileScreen from './components/ProfileScreen';
+import BottomNavigation from './components/BottomNavigation';
 
 const App: React.FC = () => {
   const [gameState, setGameState] = useState<GameState>(GameState.SPLASH);
@@ -23,10 +25,10 @@ const App: React.FC = () => {
       name,
       phone,
       avatar,
-      streak: 0,
+      streak: 5,
       hearts: 5,
       badges: [],
-      score: 0,
+      score: 12500,
       completedLevels: []
     });
     setGameState(GameState.MAP);
@@ -53,24 +55,39 @@ const App: React.FC = () => {
     setGameState(GameState.MAP);
   };
 
+  const showNavbar = user && (gameState === GameState.MAP || gameState === GameState.PROFILE);
+
   return (
     <div className="relative w-full h-screen max-w-md mx-auto bg-amber-50 shadow-2xl overflow-hidden flex flex-col">
-      {gameState === GameState.SPLASH && <SplashScreen onStart={handleStart} />}
-      
-      {gameState === GameState.AUTH && (
-        <AuthScreen onComplete={handleAuthComplete} />
-      )}
+      <div className="flex-1 relative overflow-hidden">
+        {gameState === GameState.SPLASH && <SplashScreen onStart={handleStart} />}
+        
+        {gameState === GameState.AUTH && (
+          <AuthScreen onComplete={handleAuthComplete} />
+        )}
 
-      {gameState === GameState.MAP && user && (
-        <WorldMap user={user} onSelectLevel={handleSelectLevel} />
-      )}
+        {gameState === GameState.MAP && user && (
+          <WorldMap user={user} onSelectLevel={handleSelectLevel} />
+        )}
 
-      {gameState === GameState.LEVEL && user && currentLevelId && (
-        <GameLevel 
-          user={user} 
-          levelId={currentLevelId} 
-          onFinish={handleLevelComplete}
-          onBack={() => setGameState(GameState.MAP)}
+        {gameState === GameState.PROFILE && user && (
+          <ProfileScreen user={user} />
+        )}
+
+        {gameState === GameState.LEVEL && user && currentLevelId && (
+          <GameLevel 
+            user={user} 
+            levelId={currentLevelId} 
+            onFinish={handleLevelComplete}
+            onBack={() => setGameState(GameState.MAP)}
+          />
+        )}
+      </div>
+
+      {showNavbar && (
+        <BottomNavigation 
+          currentTab={gameState} 
+          onTabChange={(state) => setGameState(state)} 
         />
       )}
     </div>

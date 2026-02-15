@@ -25,12 +25,12 @@ const WorldMap: React.FC<WorldMapProps> = ({ user, onSelectLevel }) => {
         </div>
         <div className="flex items-center bg-amber-50 px-4 py-1 rounded-full border border-accent/30 shadow-sm">
           <span className="text-accent material-icons-round text-sm mr-1">monetization_on</span>
-          <span className="text-sm font-bold text-primary">{user.score}</span>
+          <span className="text-sm font-bold text-primary">{user.score.toLocaleString()}</span>
         </div>
       </div>
 
       {/* Map Content - Duolingo Style Path */}
-      <div className="relative flex-1 bg-background-light overflow-y-auto scrollbar-hide">
+      <div className="relative flex-1 bg-background-light overflow-y-auto scrollbar-hide pb-24">
         <div className="absolute inset-0 opacity-5 pointer-events-none">
           {ZELLIGE_PATTERN}
         </div>
@@ -105,24 +105,6 @@ const WorldMap: React.FC<WorldMapProps> = ({ user, onSelectLevel }) => {
           })}
         </div>
       </div>
-
-      {/* Bottom Profile Bar */}
-      <footer className="relative z-20 bg-primary p-4 flex items-center justify-between border-t-4 border-accent/20">
-        <div className="flex items-center space-x-3">
-          <div className="w-12 h-12 rounded-full bg-white/20 border-2 border-accent flex items-center justify-center text-2xl overflow-hidden shadow-inner">
-            {user.avatar === Gender.BOY ? '👳‍♂️' : '🧕'}
-          </div>
-          <div>
-            <p className="text-white font-bold text-sm leading-none font-display tracking-tight">{user.name}</p>
-            <p className="text-accent text-[10px] mt-1 font-bold uppercase">Maître de la Voûte</p>
-          </div>
-        </div>
-        <div className="text-right">
-          <button className="bg-accent text-primary px-4 py-2 rounded-xl font-bold text-xs shadow-lg active:scale-95 transition-all">
-             INVENTAIRE
-          </button>
-        </div>
-      </footer>
     </div>
   );
 };

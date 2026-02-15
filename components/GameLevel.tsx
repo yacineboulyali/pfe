@@ -22,11 +22,12 @@ const GameLevel: React.FC<GameLevelProps> = ({ user, levelId, onFinish, onBack }
   const level = LEVELS.find(l => l.id === levelId)!;
   const [script, setScript] = useState<CodeBlock[]>([]);
   const [isRunning, setIsRunning] = useState(false);
+  const [activeBlockId, setActiveBlockId] = useState<string | null>(null);
+  const [currentAction, setCurrentAction] = useState<'moving' | 'turning' | null>(null);
   const [turtlePos, setTurtlePos] = useState({ x: level.startPos.x, y: level.startPos.y, angle: level.startPos.angle });
   const [path, setPath] = useState<{ x: number; y: number }[]>([]);
   const canvasRef = useRef<HTMLDivElement>(null);
 
-  // La cible finale est le dernier point de targetPath
   const target = level.targetPath[level.targetPath.length - 1];
   const distance = Math.sqrt(Math.pow(turtlePos.x - target.x, 2) + Math.pow(turtlePos.y - target.y, 2));
   const isClose = distance < 40;
@@ -62,9 +63,10 @@ const GameLevel: React.FC<GameLevelProps> = ({ user, levelId, onFinish, onBack }
     setTurtlePos({ x: level.startPos.x, y: level.startPos.y, angle: level.startPos.angle });
     setPath([{ x: level.startPos.x, y: level.startPos.y }]);
     setIsRunning(false);
+    setActiveBlockId(null);
+    setCurrentAction(null);
   };
 
-  // Initialiser le chemin avec la position de départ
   useEffect(() => {
     setPath([{ x: level.startPos.x, y: level.startPos.y }]);
   }, [level]);
@@ -75,32 +77,38 @@ const GameLevel: React.FC<GameLevelProps> = ({ user, levelId, onFinish, onBack }
     let newPath = [{ x: currentPos.x, y: currentPos.y }];
 
     for (const block of script) {
+      setActiveBlockId(block.id);
+      
       if (block.type === 'comment') {
-        await new Promise(r => setTimeout(r, 200));
+        await new Promise(r => setTimeout(r, 400));
         continue;
       }
 
-      await new Promise(r => setTimeout(r, 500));
-      
-      switch (block.type) {
-        case 'forward':
-          const rad = (currentPos.angle * Math.PI) / 180;
-          currentPos.x += Math.sin(rad) * 50; // On synchronise avec Avancer(50)
-          currentPos.y -= Math.cos(rad) * 50;
-          break;
-        case 'right':
-          currentPos.angle = (currentPos.angle + 90) % 360;
-          break;
-        case 'left':
-          currentPos.angle = (currentPos.angle - 90 + 360) % 360;
-          break;
+      // Déterminer l'action visuelle
+      if (block.type === 'forward') {
+        setCurrentAction('moving');
+        const rad = (currentPos.angle * Math.PI) / 180;
+        currentPos.x += Math.sin(rad) * 50;
+        currentPos.y -= Math.cos(rad) * 50;
+      } else if (block.type === 'right' || block.type === 'left') {
+        setCurrentAction('turning');
+        const turnDir = block.type === 'right' ? 90 : -90;
+        currentPos.angle = (currentPos.angle + turnDir + 360) % 360;
       }
       
+      // Mettre à jour l'état de la tortue (déclenche la transition CSS de 500ms)
       setTurtlePos({ ...currentPos });
+      
+      // Attendre la fin de l'animation de mouvement/rotation
+      await new Promise(r => setTimeout(r, 550));
+      
+      // Enregistrer le nouveau point dans le tracé
       newPath = [...newPath, { x: currentPos.x, y: currentPos.y }];
       setPath(newPath);
+      setCurrentAction(null);
     }
 
+    setActiveBlockId(null);
     const successThreshold = 25;
     const finalDistance = Math.sqrt(Math.pow(currentPos.x - target.x, 2) + Math.pow(currentPos.y - target.y, 2));
     
@@ -149,7 +157,6 @@ const GameLevel: React.FC<GameLevelProps> = ({ user, levelId, onFinish, onBack }
               {ZELLIGE_PATTERN}
             </div>
 
-            {/* Target Path Ghost - Visual guide for the user */}
             <svg className="absolute inset-0 w-full h-full opacity-30">
                <polyline 
                  points={`${level.startPos.x},${level.startPos.y} ` + level.targetPath.map(p => `${p.x},${p.y}`).join(' ')} 
@@ -162,7 +169,6 @@ const GameLevel: React.FC<GameLevelProps> = ({ user, levelId, onFinish, onBack }
                />
             </svg>
 
-            {/* Target Indicator at final destination */}
             <div 
               className={`absolute w-12 h-12 border-4 border-dashed rounded-full flex items-center justify-center transition-all duration-300 ${
                 isVeryClose 
@@ -176,17 +182,20 @@ const GameLevel: React.FC<GameLevelProps> = ({ user, levelId, onFinish, onBack }
               <span className="material-icons-round text-accent text-xl">location_on</span>
             </div>
 
-            {/* User's Trajectory */}
             <svg className="absolute inset-0 w-full h-full">
                <polyline points={path.map(p => `${p.x},${p.y}`).join(' ')} fill="none" stroke="#10b981" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
 
-            {/* Avatar / Turtle */}
+            {/* Avatar / Turtle avec transition CSS */}
             <div 
               className="absolute transition-all duration-500 ease-in-out z-30"
-              style={{ left: `${turtlePos.x}px`, top: `${turtlePos.y}px`, transform: `translate(-50%, -50%) rotate(${turtlePos.angle}deg)` }}
+              style={{ 
+                left: `${turtlePos.x}px`, 
+                top: `${turtlePos.y}px`, 
+                transform: `translate(-50%, -50%) rotate(${turtlePos.angle}deg)` 
+              }}
             >
-              <div className="relative w-12 h-12">
+              <div className={`relative w-12 h-12 transition-transform ${currentAction === 'moving' ? 'animate-turtle-walk' : currentAction === 'turning' ? 'animate-turtle-pivot' : ''}`}>
                 <div className="w-10 h-10 rounded-full shadow-lg border-2 border-white absolute top-0 left-0 z-10 bg-white flex items-center justify-center text-2xl overflow-hidden">
                   {user.avatar === 'BOY' ? '👳‍♂️' : '🧕'}
                 </div>
@@ -204,7 +213,6 @@ const GameLevel: React.FC<GameLevelProps> = ({ user, levelId, onFinish, onBack }
 
         {/* Coding Section */}
         <section className="flex-1 flex flex-col gap-3 min-h-0">
-          {/* Blocks Tray */}
           <div className="flex gap-2 overflow-x-auto pb-2 px-1 scrollbar-hide shrink-0">
             {level.availableBlocks.map(action => (
               <button
@@ -223,7 +231,6 @@ const GameLevel: React.FC<GameLevelProps> = ({ user, levelId, onFinish, onBack }
             ))}
           </div>
 
-          {/* Workspace Area */}
           <div className="flex-1 bg-white/80 rounded-3xl shadow-inner border-2 border-dashed border-primary/20 p-4 overflow-y-auto relative flex flex-col gap-3">
             <div className="absolute top-2 right-4 text-[10px] font-bold text-primary/30 uppercase tracking-widest pointer-events-none font-display">
                 Script d'Ibn Battuta
@@ -243,32 +250,36 @@ const GameLevel: React.FC<GameLevelProps> = ({ user, levelId, onFinish, onBack }
                 {script.map((block, i) => (
                   <div 
                     key={block.id} 
-                    className={`flex items-center justify-between p-3 rounded-2xl shadow-sm border-2 animate-in slide-in-from-left-2 duration-200 ${
-                      block.type === 'comment' 
-                        ? 'bg-emerald-50 border-emerald-100' 
-                        : 'bg-amber-50 border-amber-100'
+                    className={`flex items-center justify-between p-3 rounded-2xl shadow-sm border-2 transition-all duration-200 hover:shadow-md hover:scale-[1.01] animate-in slide-in-from-left-2 ${
+                      activeBlockId === block.id 
+                        ? 'bg-accent border-accent scale-105 shadow-lg z-10' 
+                        : block.type === 'comment' 
+                          ? 'bg-emerald-50 border-emerald-100 hover:border-emerald-400' 
+                          : 'bg-amber-50 border-amber-100 hover:border-secondary'
                     }`}
                   >
                     <div className="flex items-center gap-3 flex-1">
-                      <span className="text-[10px] font-mono text-primary/40 w-4">{i + 1}</span>
-                      <span className={`material-icons-round text-sm ${block.type === 'comment' ? 'text-emerald-500' : 'text-secondary'}`}>
+                      <span className={`text-[10px] font-mono w-4 ${activeBlockId === block.id ? 'text-white' : 'text-primary/40'}`}>{i + 1}</span>
+                      <span className={`material-icons-round text-sm ${activeBlockId === block.id ? 'text-white' : (block.type === 'comment' ? 'text-emerald-500' : 'text-secondary')}`}>
                         {ACTION_ICONS[block.type]}
                       </span>
                       {block.type === 'comment' ? (
                         <input 
                           type="text" 
                           placeholder="Logique..." 
-                          className="bg-transparent border-none focus:outline-none text-emerald-800 text-xs flex-1 font-body italic"
+                          disabled={isRunning}
+                          className={`bg-transparent border-none focus:outline-none text-xs flex-1 font-body italic ${activeBlockId === block.id ? 'text-white placeholder:text-white/50' : 'text-emerald-800'}`}
                           value={block.text}
                           onChange={(e) => updateComment(block.id, e.target.value)}
                         />
                       ) : (
-                        <span className="font-bold text-primary text-xs">{block.label}</span>
+                        <span className={`font-bold text-xs ${activeBlockId === block.id ? 'text-white' : 'text-primary'}`}>{block.label}</span>
                       )}
                     </div>
                     <button 
                       onClick={() => removeBlock(block.id)}
-                      className="ml-2 text-primary/20 hover:text-red-500 transition-colors"
+                      disabled={isRunning}
+                      className={`ml-2 transition-all hover:scale-125 ${activeBlockId === block.id ? 'text-white/50' : 'text-primary/20 hover:text-red-500'}`}
                     >
                       <span className="material-icons-round text-lg">close</span>
                     </button>
@@ -278,11 +289,11 @@ const GameLevel: React.FC<GameLevelProps> = ({ user, levelId, onFinish, onBack }
             )}
           </div>
 
-          {/* Execution Buttons */}
           <div className="h-16 flex gap-3 shrink-0 mt-auto">
             <button 
               onClick={clearScript}
-              className="h-14 w-14 rounded-2xl bg-white text-primary/40 flex items-center justify-center btn-3d border-b-4 border-gray-200"
+              disabled={isRunning}
+              className="h-14 w-14 rounded-2xl bg-white text-primary/40 flex items-center justify-center btn-3d border-b-4 border-gray-200 disabled:opacity-50"
             >
               <span className="material-icons-round text-2xl">delete_outline</span>
             </button>
@@ -295,7 +306,9 @@ const GameLevel: React.FC<GameLevelProps> = ({ user, levelId, onFinish, onBack }
                   : 'bg-primary border-primary/70 shadow-lg'
               }`}
             >
-              <span className="material-icons-round">{isRunning ? 'sync' : 'play_arrow'}</span>
+              <span className={`material-icons-round ${isRunning ? 'animate-spin' : ''}`}>
+                {isRunning ? 'sync' : 'play_arrow'}
+              </span>
               {isRunning ? 'MARCHE...' : 'LANCER'}
             </button>
           </div>

@@ -3,7 +3,8 @@ export enum GameState {
   SPLASH = 'SPLASH',
   AUTH = 'AUTH',
   MAP = 'MAP',
-  LEVEL = 'LEVEL'
+  LEVEL = 'LEVEL',
+  PROFILE = 'PROFILE'
 }
 
 export enum Gender {
