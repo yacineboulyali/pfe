@@ -19,58 +19,63 @@ export const LEVELS: Level[] = [
   {
     id: 'lvl1',
     cityId: 'rabat',
-    title: 'Le Premier Pas',
-    mission: 'Ibn Battuta doit avancer de 100 pixels vers le nord pour quitter la porte.',
-    startPos: { x: 175, y: 200, angle: 0 },
-    targetPath: [{ x: 175, y: 150 }, { x: 175, y: 100 }],
-    availableBlocks: ['forward', 'comment']
+    title: 'Le Grand Départ',
+    mission: 'Bienvenue aventurier ! Fais avancer Ibn Battuta tout droit en utilisant un bloc forward(50).',
+    startPos: { x: 175, y: 220, angle: 0 },
+    targetPath: [{ x: 175, y: 170 }, { x: 175, y: 120 }],
+    availableBlocks: ['forward']
   },
   {
     id: 'lvl2',
     cityId: 'rabat',
-    title: "L'Angle de la Kasbah",
-    mission: 'Avance de 50, tourne à droite, puis avance de 50 pour atteindre la fontaine.',
-    startPos: { x: 125, y: 175, angle: 0 },
-    targetPath: [{ x: 125, y: 125 }, { x: 175, y: 125 }],
-    availableBlocks: ['forward', 'right', 'comment']
+    title: 'Le Tournant de la Kasbah',
+    mission: 'Apprends à tourner ! Avance, tourne à droite, puis avance encore pour atteindre la fontaine.',
+    startPos: { x: 100, y: 180, angle: 0 },
+    targetPath: [{ x: 100, y: 130 }, { x: 150, y: 130 }],
+    availableBlocks: ['forward', 'right']
   },
   {
     id: 'lvl3',
     cityId: 'rabat',
-    title: "Le Zig-zag de Salé",
-    mission: 'Contourne les murs : Avance, Gauche, Avance, Droite, Avance.',
-    startPos: { x: 100, y: 200, angle: 0 },
-    targetPath: [{ x: 100, y: 150 }, { x: 50, y: 150 }, { x: 50, y: 100 }],
-    availableBlocks: ['forward', 'right', 'left', 'comment']
+    title: 'Les Ruelles de Chellah',
+    mission: 'Navigue dans les ruelles : combine les virages à gauche et à droite pour éviter les obstacles.',
+    startPos: { x: 50, y: 220, angle: 0 },
+    targetPath: [{ x: 50, y: 170 }, { x: 100, y: 170 }, { x: 100, y: 120 }, { x: 150, y: 120 }],
+    availableBlocks: ['forward', 'right', 'left']
   },
   {
     id: 'lvl4',
     cityId: 'rabat',
-    title: "Le Carré Parfait",
-    mission: 'Trace un demi-carré : Avance 50, Droite, Avance 50, Droite, Avance 50.',
-    startPos: { x: 150, y: 200, angle: 0 },
-    targetPath: [{ x: 150, y: 150 }, { x: 200, y: 150 }, { x: 200, y: 200 }],
-    availableBlocks: ['forward', 'right', 'comment']
+    title: 'Le Tracé du Carré',
+    mission: 'Découvre la puissance des boucles ! Utilise for i in range(4): pour dessiner un carré parfait.',
+    startPos: { x: 120, y: 200, angle: 0 },
+    targetPath: [{ x: 120, y: 150 }, { x: 170, y: 150 }, { x: 170, y: 200 }, { x: 120, y: 200 }],
+    availableBlocks: ['forward', 'right', 'for_loop']
   },
   {
     id: 'lvl5',
     cityId: 'rabat',
-    title: "La Voûte Finale",
-    mission: 'Utilise toutes tes connaissances pour atteindre le centre de la Tour Hassan.',
-    startPos: { x: 100, y: 100, angle: 90 },
-    targetPath: [{ x: 150, y: 100 }, { x: 150, y: 150 }, { x: 200, y: 150 }],
-    availableBlocks: ['forward', 'right', 'left', 'comment']
+    title: "L'Esplanade de la Tour",
+    mission: "Défi final ! Atteins le centre de l'esplanade en montant les marches (avance, droite, avance, gauche) répétées 3 fois.",
+    startPos: { x: 50, y: 250, angle: 0 },
+    targetPath: [
+      { x: 50, y: 200 }, { x: 100, y: 200 }, 
+      { x: 100, y: 150 }, { x: 150, y: 150 }, 
+      { x: 150, y: 100 }, { x: 200, y: 100 }
+    ],
+    availableBlocks: ['forward', 'right', 'left', 'for_loop', 'comment']
   }
 ];
 
 export const BLOCK_LABELS: Record<TurtleAction, string> = {
-  forward: 'Avancer(50)',
-  backward: 'Reculer(50)',
-  right: 'Tourner Droite(90°)',
-  left: 'Tourner Gauche(90°)',
-  penUp: 'Lever Stylo',
-  penDown: 'Baisser Stylo',
-  comment: '# Commentaire'
+  forward: 'forward(50)',
+  backward: 'backward(50)',
+  right: 'turn_right(90)',
+  left: 'turn_left(90)',
+  penUp: 'pen_up()',
+  penDown: 'pen_down()',
+  comment: '# comment',
+  for_loop: 'for i in range(4):'
 };
 
 export const ZELLIGE_PATTERN = (

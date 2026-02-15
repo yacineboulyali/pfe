@@ -34,7 +34,7 @@ export interface City {
   description: string;
 }
 
-export type TurtleAction = 'forward' | 'backward' | 'right' | 'left' | 'penUp' | 'penDown' | 'comment';
+export type TurtleAction = 'forward' | 'backward' | 'right' | 'left' | 'penUp' | 'penDown' | 'comment' | 'for_loop';
 
 export interface CodeBlock {
   id: string;
@@ -42,6 +42,7 @@ export interface CodeBlock {
   value?: number;
   text?: string;
   label: string;
+  children?: CodeBlock[];
 }
 
 export interface Level {
